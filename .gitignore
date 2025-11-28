@@ -7,3 +7,7 @@
 docs
 
 *_gen.go
+
+config/config.yaml
+
+OPTIMIZATION_SUGGESTIONS.md

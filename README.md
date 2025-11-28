@@ -30,7 +30,7 @@ go-api-scaffold/
 │  ├─ registry/            # Handler registry and code generation
 │  ├─ router/              # Router builder
 │  ├─ db/                  # Database and Redis clients
-│  ├─ service/             # Business logic services
+
 │  └─ util/                # Utility functions
 ├─ go.mod
 ├─ go.sum

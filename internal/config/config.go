@@ -14,7 +14,7 @@ type Config struct {
 	}
 	DB struct {
 		Host     string
-		Port     string
+		Port     int
 		User     string
 		Password string
 		Database string
@@ -34,7 +34,6 @@ func bindFlag(prefix string, m map[string]interface{}) {
 		case map[string]interface{}:
 			bindFlag(key, v)
 		default:
-			// 如果命令行提供参数，则覆盖
 			if pflag.Lookup(strings.ReplaceAll(key, ".", "_")) != nil {
 				pflag.Lookup(strings.ReplaceAll(key, ".", "_")).Value.Set(fmt.Sprintf("%v", val))
 			}
@@ -59,6 +58,23 @@ func LoadConfig() {
 		panic(err)
 	}
 
+	if err := validateConfig(&Conf); err != nil {
+		panic(fmt.Sprintf("config validation failed: %v", err))
+	}
+
 	v.WatchConfig()
 	fmt.Printf("Current configuration: %+v\n", Conf)
+}
+
+func validateConfig(cfg *Config) error {
+	if cfg.Server.Port == 0 {
+		return fmt.Errorf("server.port is required")
+	}
+	if cfg.DB.Host == "" {
+		return fmt.Errorf("db.host is required")
+	}
+	if cfg.DB.Port == 0 {
+		return fmt.Errorf("db.port is required")
+	}
+	return nil
 }
